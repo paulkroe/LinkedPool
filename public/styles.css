@@ -1,0 +1,53 @@
+/* General body styles */
+body {
+    font-family: 'Arial', sans-serif; /* Modern, sans-serif font */
+    background-color: #121212; /* Dark background for contrast */
+    color: #f0f0f0; /* Light text color for readability */
+    margin: 0;
+    padding: 20px;
+}
+
+/* Main header styles */
+h1 {
+    color: #ff66c4; /* Pink color to match the logo */
+    text-align: center;
+}
+
+/* Secondary header styles */
+h2 {
+    color: #ff66c4; /* Consistent color for headers */
+    border-bottom: 1px solid #ff66c4; /* Underline effect */
+    padding-bottom: 10px;
+}
+
+/* Styles for member list */
+ul#members {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+
+ul#members li {
+    background-color: #1e1e1e; /* Slightly lighter than body for distinction */
+    border: 1px solid #ff66c4; /* Border color to match the logo */
+    padding: 10px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center; /* Align items in the list horizontally */
+    border-radius: 5px; /* Rounded corners for a smoother look */
+}
+
+ul#members img {
+    border-radius: 50%; /* Circular images for profile pictures */
+    margin-right: 10px; /* Space between image and text */
+}
+
+/* Responsive media query */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    h1, h2 {
+        font-size: 1.5em; /* Smaller font size on smaller screens */
+    }
+}

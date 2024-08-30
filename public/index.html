@@ -3,67 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lobby Example</title>
-    <!-- Optional: Include a CSS file for styling -->
+    <title>LinkedPool</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="LinkedPoolLogo.png"> <!-- Favicon link -->
 </head>
 <body>
+    <img src="LinkedPoolLogo.png" alt="LinkedPool Logo" style="width: 100px; display: block; margin: 10px auto;"> <!-- Logo displayed on the page -->
     <h1>Lobby</h1>
-    <input type="text" id="username" style="display:none;"> <!-- Hidden input field for storing username -->
     <h2>Current Members:</h2>
     <ul id="members"></ul>
 
-    <!-- JavaScript to handle the lobby logic -->
     <script>
-        // This script will handle extracting the username from the URL and joining the lobby
+        // Call updateLobby on page load to display all members
         window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('name');
-            if (name) {
-                document.getElementById('username').value = name;
-                joinLobby();  // Assuming joinLobby function will make a server request
-            }
-            updateLobby(); // Function to refresh and display current members
+            updateLobby();
         };
 
-        function joinLobby() {
-            const username = document.getElementById('username').value;
-            console.log('Joining lobby as:', username);
-            fetch('/join', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: username })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                updateLobby();
-            })
-            .catch(error => console.error('Error joining the lobby:', error));
-        }
-
         function updateLobby() {
-    fetch('/lobby')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to fetch lobby with status ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        const membersList = document.getElementById('members');
-        membersList.innerHTML = ''; // Clear existing entries
-        data.forEach(member => {
-            const li = document.createElement('li');
-            li.textContent = member;
-            membersList.appendChild(li);
-        });
-    })
-    .catch(error => console.error('Error updating lobby:', error));
-}
+            fetch('/all-users')  // Fetches the list of users from the server
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users with status ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const membersList = document.getElementById('members');
+                membersList.innerHTML = ''; // Clear existing entries
 
+                data.forEach(user => {
+                    const li = document.createElement('li');
+                    
+                    // Create an image element for the profile picture
+                    const img = document.createElement('img');
+                    img.src = user.pictureUrl;  // Use the stored picture URL from the server
+                    img.alt = user.name;
+                    img.style.width = '50px';  // Set image size
+                    img.style.height = '50px';  // Set image size
+                    img.style.marginRight = '10px';  // Add spacing between the image and the name
+
+                    // Create a text node for the user's name
+                    const text = document.createTextNode(user.name);
+
+                    // Append the image and text to the list item
+                    li.appendChild(img);  // Add image first
+                    li.appendChild(text);  // Then add the user's name
+
+                    // Append the list item to the members list
+                    membersList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error updating lobby:', error));
+        }
     </script>
 </body>
 </html>
