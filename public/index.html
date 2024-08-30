@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby Example</title>
+    <!-- Optional: Include a CSS file for styling -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Lobby</h1>
+    <input type="text" id="username" style="display:none;"> <!-- Hidden input field for storing username -->
+    <h2>Current Members:</h2>
+    <ul id="members"></ul>
+
+    <!-- JavaScript to handle the lobby logic -->
+    <script>
+        // This script will handle extracting the username from the URL and joining the lobby
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            if (name) {
+                document.getElementById('username').value = name;
+                joinLobby();  // Assuming joinLobby function will make a server request
+            }
+            updateLobby(); // Function to refresh and display current members
+        };
+
+        function joinLobby() {
+            const username = document.getElementById('username').value;
+            console.log('Joining lobby as:', username);
+            fetch('/join', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                updateLobby();
+            })
+            .catch(error => console.error('Error joining the lobby:', error));
+        }
+
+        function updateLobby() {
+    fetch('/lobby')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch lobby with status ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const membersList = document.getElementById('members');
+        membersList.innerHTML = ''; // Clear existing entries
+        data.forEach(member => {
+            const li = document.createElement('li');
+            li.textContent = member;
+            membersList.appendChild(li);
+        });
+    })
+    .catch(error => console.error('Error updating lobby:', error));
+}
+
+    </script>
+</body>
+</html>

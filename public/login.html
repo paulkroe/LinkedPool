@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Enter the Lobby</h1>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Enter your name" required>
+        <button type="submit">Enter Lobby</button>
+    </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting the traditional way
+            const name = document.getElementById('username').value;
+            if (name) {
+                // Open the lobby page in a new tab with the username as a URL parameter
+                window.open(`/index.html?name=${encodeURIComponent(name)}`, '_blank');
+            } else {
+                alert('Please enter a name.');
+            }
+        });
+    </script>
+</body>
+</html>
