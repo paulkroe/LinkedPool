@@ -102,6 +102,6 @@ Thumbs.db
 *.jpeg
 *.JPEG
 
-!/public/images/LinkedPoolLogo.png
+!/LinkedPoolLogo.png
 
 *.txt
