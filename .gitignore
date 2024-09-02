@@ -94,6 +94,10 @@ dist/
 .DS_Store
 Thumbs.db
 
-# png files
+# png/JPG files
 *.png
 *.PNG
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
