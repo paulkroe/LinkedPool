@@ -1,0 +1,144 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensures the body covers the entire viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+ul, li, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.site-header {
+    width: 100%;
+    background-color: #1E191B; /* Dark background for the header */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.site-logo {
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.site-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #7C90DB; /* Use the light blue color for the title */
+}
+
+.site-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.site-nav ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #736B92;
+    transition: color 0.3s ease;
+    margin-right: 20px;
+}
+
+.site-nav ul li a:hover {
+    color: #ffffff; /* White color on hover */
+}
+
+.login-btn {
+    background-color: #7C90DB;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #736B92; /* Change to the purple color on hover */
+}
+
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.member-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    outline: 2px solid #0073b1;
+
+}
+
+.member-img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+.member-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+    margin: 0;
+}
+
+.member-bio {
+    font-size: 14px;
+    color: #555555;
+    margin: 5px 0 0;
+}
+
+.view-button {
+    padding: 6px 16px; /* Adequate padding inside the button */
+    font-size: 14px; /* Optimal text size for legibility */
+    background-color: white; /* Background color set to white */
+    color: #0073b1; /* LinkedIn's blue color for text */
+    border: 2px solid #0073b1; /* Solid blue border */
+    border-radius: 24px; /* Fully rounded corners */
+    cursor: pointer;
+    text-align: center; /* Center text inside the button */
+    display: inline-block; /* Allow the button to fit the content width */
+    font-weight: 600; /* Bold text for emphasis */
+    line-height: 1.5; /* Adjust line height for text inside button */
+    text-decoration: none; /* No underline for the text */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+.view-button:hover {
+    background-color: #0073b1; /* Background turns to blue on hover */
+    color: white; /* Text color turns to white on hover */
+}
+
+

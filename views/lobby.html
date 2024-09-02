@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedPool</title>
+    <link rel="stylesheet" href="/lobby-styles.css">
+    <link rel="icon" type="image/png" href="LinkedPoolLogo.png">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo-container">
+            <img src="/LinkedPoolLogo.png" alt="Logo" class="site-logo">
+            <span class="site-title">LinkedPool</span>
+        </div>
+    </header>
+<body>
+    <div id="members" class="members-grid"></div>
+
+    <script>
+    window.onload = function() {
+        const lobbyId = window.location.pathname.split('/').pop(); // Extract the lobby ID from the URL
+        console.log('Lobby ID:', lobbyId);
+        fetch(`/lobby-members/${lobbyId}`)
+        .then(response => response.json())
+        .then(data => {
+            const membersList = document.getElementById('members');
+            membersList.innerHTML = '';
+            data.members.forEach(member => {
+                const memberCard = document.createElement('div');
+                memberCard.className = 'member-card';
+                
+                const img = document.createElement('img');
+                img.src = member.pictureUrl; // Display the user's profile picture
+                img.alt = member.name;
+                img.className = 'member-img';
+
+                const name = document.createElement('p');
+                name.textContent = member.name;
+                name.className = 'member-name';
+
+                // Create a 'View' button similar to LinkedIn's 'Connect' button
+                const viewButton = document.createElement('button');
+                viewButton.textContent = 'View';
+                viewButton.className = 'view-button';
+
+                // Add an event listener to the button
+                viewButton.addEventListener('click', function() {
+                    viewMemberLink(member.linkedinId, lobbyId);
+                });
+
+                memberCard.appendChild(img);
+                memberCard.appendChild(name);
+                memberCard.appendChild(viewButton); // Add the button to the card
+                membersList.appendChild(memberCard);
+            });
+        })
+        .catch(error => console.error('Error loading lobby members:', error));
+    };
+
+    function viewMemberLink(linkedinId, lobbyId) {
+        fetch(`/get-link?linkedinId=${linkedinId}&lobbyId=${lobbyId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                window.open(data.url, '_blank'); // Open the link in a new tab
+            } else {
+                alert('No URL found for this user.');
+            }
+        })
+        .catch(error => console.error('Error fetching the link:', error));
+    }
+</script>
+
+</body>
+</html>

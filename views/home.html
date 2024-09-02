@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Lobby</title>
+    <link rel="stylesheet" href="/home-styles.css">
+    <!-- Import QRCode.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo-container">
+            <img src="/LinkedPoolLogo.png" alt="Logo" class="site-logo">
+            <span class="site-title">LinkedPool</span>
+        </div>
+    </header>
+
+    <main class="content">
+        <button id="createLobbyBtn" class="create-lobby-button">New Lobby</button>
+
+        <div id="lobbyLinkContainer" class="lobby-link-container" style="display:none;">
+            <h2>Your Lobby Link</h2>
+            <div class="link-copy-container">
+                <input type="text" id="lobbyLink" readonly class="lobby-link-input">
+                <button id="copyLinkBtn" class="copy-link-button">Copy Link</button>
+            </div>
+            <div id="copyMessage" class="copy-message">Link copied!</div>
+            <h2>QR Code</h2>
+            <div id="qrcode" class="qrcode-container"></div>
+        </div>
+    </main>
+
+    <script>
+    document.getElementById('createLobbyBtn').addEventListener('click', function() {
+        fetch('/create-lobby', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.lobbyId) {
+                throw new Error('No lobby ID received from the server');
+            }
+
+            const lobbyLink = `${window.location.origin}/lobby/${data.lobbyId}`;
+            document.getElementById('lobbyLink').value = lobbyLink;
+            document.getElementById('lobbyLinkContainer').style.display = 'block';
+
+            // Clear the old QR Code
+            document.getElementById("qrcode").innerHTML = "";
+
+            // Generate a new QR Code with options
+            new QRCode(document.getElementById("qrcode"), {
+                text: lobbyLink,
+                width: 256,
+                height: 256,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        })
+        .catch(error => console.error('Error creating lobby:', error));
+    });
+
+    document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        const copyText = document.getElementById('lobbyLink');
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand('copy');
+
+        // Show the "Link copied!" message
+        const copyMessage = document.getElementById('copyMessage');
+        copyMessage.style.opacity = '1'; // Make the message visible
+        setTimeout(() => {
+            copyMessage.style.opacity = '0'; // Fade out after 2 seconds
+        }, 2000);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Link</title>
+    <link rel="stylesheet" href="/add-link-styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo-container">
+            <img src="/LinkedPoolLogo.png" alt="Logo" class="site-logo">
+            <span class="site-title">LinkedPool</span>
+        </div>
+    </header>
+
+    <main class="content">
+        <form id="linkForm" action="/submit-link" method="POST" class="form">
+            <input type="hidden" name="token" id="tokenInput">
+            <input type="hidden" name="lobbyId" id="lobbyIdInput">
+
+            <div id="errorMessage" class="error-message">
+                Invalid link. Please provide a link in the form:<br> 
+                https://www.linkedin.com/in/paul-kroeger
+            </div>
+
+            <h1>Add Your LinkedIn Link</h1>
+            <input type="url" id="url" name="url" placeholder="https://www.linkedin.com/in/paul-kroeger" required class="form-input">
+
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+
+        <!-- Instruction text -->
+        <h1>How to Find Your LinkedIn URL:</h1>
+
+        <!-- Instruction buttons -->
+        <div class="instructions">
+            <button id="desktopBtn" class="instruction-button">Desktop</button>
+            <button id="mobileBtn" class="instruction-button active">Mobile</button>
+        </div>
+
+        <!-- Container for the images -->
+        <div id="instructionImages" class="instruction-images"></div>
+    </main>
+
+    <script>
+        // Inject the token and lobbyId into the hidden inputs
+        document.getElementById('tokenInput').value = new URLSearchParams(window.location.search).get('token');
+        document.getElementById('lobbyIdInput').value = new URLSearchParams(window.location.search).get('lobbyId');
+
+        // Add event listener for form submission
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            const url = document.getElementById('url').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Check if the URL starts with the correct LinkedIn URL pattern
+            if (url.startsWith('https://www.linkedin.com/in/') || url.startsWith('http://www.linkedin.com/in/')) {
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'block';
+                event.preventDefault();
+            }
+        });
+
+        // Function to show mobile instructions by default
+        function showMobileInstructions() {
+            const instructionImages = document.getElementById('instructionImages');
+            instructionImages.innerHTML = `
+                <div class="instruction-tile mobile">
+                    <h3>Step 1: Open LinkedIn Mobile and Tap Your Icon</h3>
+                    <img src="/_images/mobile_screen_0.PNG" alt="Mobile Step 1" class="instruction-image">
+                </div>
+                <div class="instruction-tile mobile">
+                    <h3>Step 2: Tap Your Name</h3>
+                    <img src="/_images/mobile_screen_1.PNG" alt="Mobile Step 2" class="instruction-image">
+                </div>
+                <div class="instruction-tile mobile">
+                    <h3>Step 3: Tap the Three Dots</h3>
+                    <img src="/_images/mobile_screen_2.PNG" alt="Mobile Step 3" class="instruction-image">
+                </div>
+                <div class="instruction-tile mobile">
+                    <h3>Step 4: Tap on Contact info</h3>
+                    <img src="/_images/mobile_screen_3.PNG" alt="Mobile Step 4" class="instruction-image">
+                </div>
+                <div class="instruction-tile mobile">
+                    <h3>Step 5: Hold Down on Your URL</h3>
+                    <img src="/_images/mobile_screen_4.PNG" alt="Mobile Step 5" class="instruction-image">
+                </div>
+                <div class="instruction-tile mobile">
+                    <h3>Step 6: Select Copy</h3>
+                    <img src="/_images/mobile_screen_5.PNG" alt="Mobile Step 6" class="instruction-image">
+                </div>
+            `; 
+        }
+
+        // Show mobile instructions by default
+        showMobileInstructions();
+
+        // Handle instruction buttons
+        document.getElementById('desktopBtn').addEventListener('click', function() {
+            const instructionImages = document.getElementById('instructionImages');
+            instructionImages.innerHTML = `
+                <div class="instruction-tile">
+                    <h3>Step 1: Open LinkedIn Web and Click on Your Name</h3>
+                    <img src="/_images/pc_screen_0.png" alt="Desktop Step 1" class="instruction-image">
+                </div>
+                <div class="instruction-tile">
+                    <h3>Step 2: Copy the URL from Your Search Bar</h3>
+                    <img src="/_images/pc_screen_1.png" alt="Desktop Step 2" class="instruction-image">
+                </div>
+            `;
+
+            // Update button styles
+            document.getElementById('desktopBtn').classList.add('active');
+            document.getElementById('mobileBtn').classList.remove('active');
+        });
+
+        document.getElementById('mobileBtn').addEventListener('click', function() {
+            showMobileInstructions();
+
+            // Update button styles
+            document.getElementById('mobileBtn').classList.add('active');
+            document.getElementById('desktopBtn').classList.remove('active');
+        });
+    </script>
+</body>
+</html>
